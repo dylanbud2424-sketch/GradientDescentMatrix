@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1793715228 source:/home/lunet/wsdb4/Programming projects/GradientDescentMatrix/main.cpp
+	<iostream>
+	"Matrix.h"
+
+1793717247 /home/lunet/wsdb4/Programming projects/GradientDescentMatrix/Matrix.h
+	<vector>
+	<cstddef>
+	<iostream>
+	<cmath>
+
+1793716450 source:/home/lunet/wsdb4/Programming projects/GradientDescentMatrix/Matrix.cpp
+	"Matrix.h"
+
