@@ -40,20 +40,35 @@ void printMatrix(FloatMatrix matrix){
 }
 
 FloatMatrix matrixAdd(FloatMatrix matrix1, FloatMatrix matrix2){
-    size_t matrix1_rows;
-    size_t matrix1_columns;
-    FloatMatrix result = {matrix1_rows, matrix1_columns, std::vector<float>(matrix1_rows * matrix1_columns, 0.0f)};
-    for (size_t i =0; i<matrix1_rows; i++){
-        for (size_t j=0; j<matrix1_columns; j++){
-            result(i,j) = matrix1(i,j) + matrix2(i,j);
+    size_t matrix1_rows = matrix1.get_rows();
+    size_t matrix1_columns = matrix1.get_columns();
+    size_t matrix2_columns= matrix2.get_columns();
+    size_t matrix2_rows = matrix2.get_rows();
+    if (matrix1_rows == matrix2_rows && matrix1_columns == matrix2_columns){
+        FloatMatrix result = {matrix1_rows, matrix1_columns, std::vector<float>(matrix1_rows * matrix1_columns, 0.0f)};
+        for (size_t i =0; i<matrix1_rows; i++){
+            for (size_t j=0; j<matrix1_columns; j++){
+                result(i,j) = matrix1(i,j) + matrix2(i,j);
+            }
         }
+        return result;
     }
-    return result;
+    if (matrix2_rows == 1 && matrix1_columns == matrix2_columns){
+        FloatMatrix result{matrix1_rows, matrix1_columns, std::vector<float>(matrix1_rows * matrix1_columns, 0.0f)};
+        for (size_t i = 0; i < matrix1_rows; ++i){
+            for (size_t j = 0; j<matrix1_columns; ++j){
+                result(i, j) = matrix1(i,j) + matrix2(0,j);
+            }
+        }
+        return result;
+    }
+    return FloatMatrix{0,0,{}};
 }
 
+
 FloatMatrix matrixSubtract(FloatMatrix matrix1, FloatMatrix matrix2){
-    size_t matrix1_rows;
-    size_t matrix1_columns;
+    size_t matrix1_rows = matrix1.get_rows();
+    size_t matrix1_columns = matrix1.get_columns();
     FloatMatrix result = {matrix1_rows, matrix1_columns, std::vector<float>(matrix1_rows * matrix1_columns, 0.0f)};
     for (size_t i =0; i<matrix1_rows; i++){
         for (size_t j=0; j<matrix1_columns; j++){
@@ -64,8 +79,8 @@ FloatMatrix matrixSubtract(FloatMatrix matrix1, FloatMatrix matrix2){
 }
 
 FloatMatrix matrixMultiplyScalar(FloatMatrix matrix1, float scalar){
-    size_t matrix1_rows;
-    size_t matrix1_columns;
+    size_t matrix1_rows = matrix1.get_rows();
+    size_t matrix1_columns = matrix1.get_columns();
     FloatMatrix result = {matrix1_rows, matrix1_columns, std::vector<float>(matrix1_rows * matrix1_columns, 0.0f)};
     for (size_t i =0; i<matrix1_rows; i++){
         for (size_t j=0; j<matrix1_columns; j++){
@@ -76,9 +91,9 @@ FloatMatrix matrixMultiplyScalar(FloatMatrix matrix1, float scalar){
 }
 
 FloatMatrix matrixTranspose(FloatMatrix matrix1){
-    size_t matrix1_rows;
-    size_t matrix1_columns;
-    FloatMatrix result = {matrix1_rows, matrix1_columns, std::vector<float>(matrix1_rows * matrix1_columns, 0.0f)};
+    size_t matrix1_rows = matrix1.get_rows();
+    size_t matrix1_columns = matrix1.get_columns();
+    FloatMatrix result = {matrix1_columns, matrix1_rows, std::vector<float>(matrix1_rows * matrix1_columns, 0.0f)};
     for (size_t i =0; i<matrix1_rows; i++){
         for (size_t j=0; j<matrix1_columns; j++){
             result(j,i) = matrix1(i,j);
@@ -88,8 +103,8 @@ FloatMatrix matrixTranspose(FloatMatrix matrix1){
 }
 
 FloatMatrix matrixSigmoid(FloatMatrix matrix1){
-    size_t matrix1_rows;
-    size_t matrix1_columns;
+    size_t matrix1_rows = matrix1.get_rows();
+    size_t matrix1_columns = matrix1.get_columns();
     FloatMatrix result = {matrix1_rows, matrix1_columns, std::vector<float>(matrix1_rows * matrix1_columns, 0.0f)};
     for (size_t i =0; i<matrix1_rows; i++){
         for (size_t j=0; j<matrix1_columns; j++){
@@ -97,4 +112,22 @@ FloatMatrix matrixSigmoid(FloatMatrix matrix1){
         }
     }
     return result;
+}
+
+FloatMatrix initXavierNormal(size_t rows, size_t columns) {
+    float stddev = std::sqrt(2.0f / static_cast<float>(rows + columns));
+
+    static std::mt19937 gen(std::random_device{}());
+    std::normal_distribution<float> dist(0.0f, stddev);
+
+    std::vector<float> values(rows*columns);
+    for (size_t i = 0; i < values.size(); ++i){
+        values[i] = dist(gen);
+    }
+    return FloatMatrix{rows, columns, values};
+}
+
+FloatMatrix initZeroes(size_t rows, size_t columns){
+    std::vector<float> zeroes(rows * columns, 0.0f);
+    return FloatMatrix{rows, columns, zeroes};
 }

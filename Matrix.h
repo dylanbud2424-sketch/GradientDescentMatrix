@@ -5,21 +5,22 @@
 #include <cstddef>
 #include <iostream>
 #include <cmath>
+#include <random>
 
 class FloatMatrix{
     private:
-        int m_rows;
-        int m_columns;
+        std::size_t m_rows;
+        std::size_t m_columns;
         std::vector<float> m_data;
     public:
-        FloatMatrix(int rows, int columns, std::vector<float> data)
+        FloatMatrix(std::size_t rows, std::size_t columns, std::vector<float> data)
             : m_rows(rows), m_columns(columns), m_data(data) {}
 
         float& operator()(std::size_t row, std::size_t column){
             return m_data[row*m_columns+column];
         }
-        const std::size_t get_columns(){ return m_columns; }
-        const std::size_t get_rows(){ return m_rows; }
+        std::size_t get_columns() const{ return m_columns; }
+        std::size_t get_rows() const{ return m_rows; }
 
 
 };
@@ -31,5 +32,7 @@ FloatMatrix matrixSubtract(FloatMatrix matrix1, FloatMatrix matrix2);
 FloatMatrix matrixMultiplyScalar(FloatMatrix matrix1, float scalar);
 FloatMatrix matrixTranspose(FloatMatrix matrix1);
 FloatMatrix matrixSigmoid(FloatMatrix matrix);
+FloatMatrix initXavierNormal(size_t rows, size_t columns);
+FloatMatrix initZeroes(size_t rows, size_t columns);
 void printMatrix(FloatMatrix matrix);
 #endif // MATRIX_H_INCLUDED
