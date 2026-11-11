@@ -2,32 +2,12 @@
 #include "Matrix.h"
 #include "NeuralNetwork.h"
 #include "importdataset.h"
+#include <sstream>
 
 using namespace std;
 
 int main()
 {
-/*
-// 1. Pass the initial inputs (X) into Layer 1
-FloatMatrix Z1 = matrixAdd(matrixMultiply(X, layer1.weights), layer1.biases);
-FloatMatrix H1 = matrixSigmoid(Z1); // H1 is the output of Layer 1
-
-// 2. Pass Layer 1's outputs (H1) into Layer 2 as its input!
-FloatMatrix Z2 = matrixAdd(matrixMultiply(H1, layer2.weights), layer2.biases);
-FloatMatrix Yhat = matrixSigmoid(Z2); // Final prediction matrix
-
-
-std::vector<float> test_matrix1{1,2,3,4};
-std::vector<float> test_matrix2{5,6,7,8};
-FloatMatrix matrix1{2, 2, test_matrix1};
-FloatMatrix matrix2{2, 2, test_matrix2};
-FloatMatrix result = matrixMultiply(matrix1, matrix2);
-printMatrix(result);
-result = matrixAddScalar(result, 3);
-printMatrix(result);
-load_mnist_dataset();
-
-*/
     size_t input_dimensions = 784;
     size_t hidden_dimensions = 24;
     size_t output_dimensions = 10;
@@ -46,8 +26,7 @@ load_mnist_dataset();
 
     MnistDataset dataset;
     load_mnist_dataset(dataset);
-    //const int8_t* img0 = &dataset.images[0 * 784];
-    //uint8_t lbl0 = dataset.labels[0];
+
     std::vector<float> test_matrix1(training_samples*input_dimensions);
     for (size_t i = 0; i<training_samples*input_dimensions; i++){
         test_matrix1[i] = static_cast<float>(static_cast<uint8_t>(dataset.images[i])) / 255.0f;
@@ -70,6 +49,42 @@ load_mnist_dataset();
     FloatMatrix Z2 = matrixAdd(matrixMultiply(H1, layer2.weights), layer2.biases);
     FloatMatrix Yhat = matrixSigmoid(Z2);
 
-    trainStep(mnist_network, X, Y);
+    /*
+
+    for (size_t i=0; i<1000; i++){
+        trainStep(mnist_network, X, Y);
+    }
+
+    ofstream network_parameters_layer1_weights_file("network_parameters_layer1_weights.txt");
+    writeMatrix(mnist_network.layer1.weights, network_parameters_layer1_weights_file);
+    network_parameters_layer1_weights_file.close();
+    ofstream network_parameters_layer1_biases_file("network_parameters_layer1_biases.txt");
+    writeMatrix(mnist_network.layer1.biases, network_parameters_layer1_biases_file);
+    network_parameters_layer1_biases_file.close();
+    ofstream network_parameters_layer2_weights_file("network_parameters_layer2_weights.txt");
+    writeMatrix(mnist_network.layer2.weights, network_parameters_layer2_weights_file);
+    network_parameters_layer2_weights_file.close();
+    ofstream network_parameters_layer2_biases_file("network_parameters_layer2_biases.txt");
+    writeMatrix(mnist_network.layer2.biases, network_parameters_layer2_biases_file);
+    network_parameters_layer2_biases_file.close();
+
+    */
+
+    std::string file_to_open_l1w("network_parameters_layer1_weights.txt");
+    fileToMatrix(file_to_open_l1w, mnist_network.layer1.weights);
+    printMatrix(mnist_network.layer1.weights);
+
+    std::string file_to_open_l1b("network_parameters_layer1_biases.txt");
+    fileToMatrix(file_to_open_l1b, mnist_network.layer1.weights);
+    printMatrix(mnist_network.layer1.biases);
+
+    std::string file_to_open_l2w("network_parameters_layer2_weights.txt");
+    fileToMatrix(file_to_open_l2w, mnist_network.layer1.weights);
+    printMatrix(mnist_network.layer2.weights);
+
+    std::string file_to_open_l2b("network_parameters_layer2_biases.txt");
+    fileToMatrix(file_to_open_l2b, mnist_network.layer1.weights);
+    printMatrix(mnist_network.layer2.biases);
+
     return 0;
 }

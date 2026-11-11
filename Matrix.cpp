@@ -39,6 +39,15 @@ void printMatrix(FloatMatrix matrix){
     }
 }
 
+void writeMatrix(FloatMatrix matrix, std::ofstream& filetowrite){
+    for (size_t i = 0; i<matrix.get_rows(); i++){
+        for (size_t j = 0; j<matrix.get_columns(); j++){
+            filetowrite << matrix(i,j) << " ";
+        }
+        filetowrite << '\n';
+    }
+}
+
 FloatMatrix matrixAdd(FloatMatrix matrix1, FloatMatrix matrix2){
     size_t matrix1_rows = matrix1.get_rows();
     size_t matrix1_columns = matrix1.get_columns();
@@ -130,4 +139,21 @@ FloatMatrix initXavierNormal(size_t rows, size_t columns) {
 FloatMatrix initZeroes(size_t rows, size_t columns){
     std::vector<float> zeroes(rows * columns, 0.0f);
     return FloatMatrix{rows, columns, zeroes};
+}
+
+void fileToMatrix(std::string& filename, FloatMatrix& matrix_to_write){
+
+    std::string columnString;
+    std::ifstream MyReadFile(filename);
+
+    for (size_t row = 0; std::getline(MyReadFile, columnString); ++row) {
+        std::istringstream iss(columnString);
+        std::vector<float> currentRow;
+        float value;
+
+        for (size_t column = 0; iss >> value; ++column) {
+            matrix_to_write(row, column) = value;
+        }
+    }
+    MyReadFile.close();
 }

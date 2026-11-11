@@ -32,7 +32,12 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="Matrix.cpp" />
 		<Unit filename="Matrix.h" />
+		<Unit filename="NeuralNetwork.cpp" />
+		<Unit filename="NeuralNetwork.h" />
+		<Unit filename="importdataset.cpp" />
+		<Unit filename="importdataset.h" />
 		<Unit filename="main.cpp" />
 		<Extensions />
 	</Project>

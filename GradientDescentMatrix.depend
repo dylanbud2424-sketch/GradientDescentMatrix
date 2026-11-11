@@ -12,23 +12,26 @@
 1793716450 source:/home/lunet/wsdb4/Programming projects/GradientDescentMatrix/Matrix.cpp
 	"Matrix.h"
 
-1794326223 source:/home/dylan/C++ projects/GradientDescentMatrix/main.cpp
+1794406776 source:/home/dylan/C++ projects/GradientDescentMatrix/main.cpp
 	<iostream>
 	"Matrix.h"
 	"NeuralNetwork.h"
 	"importdataset.h"
+	<sstream>
 
-1794322151 /home/dylan/C++ projects/GradientDescentMatrix/Matrix.h
+1794406972 /home/dylan/C++ projects/GradientDescentMatrix/Matrix.h
 	<vector>
 	<cstddef>
 	<iostream>
+	<fstream>
 	<cmath>
 	<random>
+	<sstream>
 
-1794313707 source:/home/dylan/C++ projects/GradientDescentMatrix/importdataset.cpp
+1794326888 source:/home/dylan/C++ projects/GradientDescentMatrix/importdataset.cpp
 	"importdataset.h"
 
-1794323468 source:/home/dylan/C++ projects/GradientDescentMatrix/Matrix.cpp
+1794407102 source:/home/dylan/C++ projects/GradientDescentMatrix/Matrix.cpp
 	"Matrix.h"
 
 1794232841 source:/home/dylan/C++ projects/GradientDescentMatrix/NeuralNetwork.cpp

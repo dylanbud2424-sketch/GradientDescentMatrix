@@ -4,8 +4,10 @@
 #include <vector>
 #include <cstddef>
 #include <iostream>
+#include <fstream>
 #include <cmath>
 #include <random>
+#include <sstream>
 
 class FloatMatrix{
     private:
@@ -34,5 +36,7 @@ FloatMatrix matrixTranspose(FloatMatrix matrix1);
 FloatMatrix matrixSigmoid(FloatMatrix matrix);
 FloatMatrix initXavierNormal(size_t rows, size_t columns);
 FloatMatrix initZeroes(size_t rows, size_t columns);
+void writeMatrix(FloatMatrix matrix, std::ofstream& filetowrite);
+void fileToMatrix(std::string& filename, FloatMatrix& matrix_to_write);
 void printMatrix(FloatMatrix matrix);
 #endif // MATRIX_H_INCLUDED

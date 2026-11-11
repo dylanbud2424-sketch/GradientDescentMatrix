@@ -25,16 +25,5 @@ MnistDataset load_flat_mnist(const std::string& img_path, const std::string& lbl
 void load_mnist_dataset(MnistDataset& dataset){
     dataset = load_flat_mnist("./data/mnist_images_10k.bin", "./data/mnist_labels_10k.bin");
     std::cout << "Loaded" << dataset.count << " images.\n";
-/*
-    const int8_t* img0 = &dataset.images[0 * 784];
-    uint8_t lbl0 = dataset.labels[0];
-
-    std::cout << "Label for image 0: " << (int)lbl0 << "\n";
-    std::cout << "First 5 pixel values: ";
-    for (int i=0; i<5; ++i){
-        std::cout << (int)img0[i] << " ";
-    }
-    std::cout << "\n";
-*/
 }
 
