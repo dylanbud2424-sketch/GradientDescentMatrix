@@ -157,3 +157,52 @@ void fileToMatrix(std::string& filename, FloatMatrix& matrix_to_write){
     }
     MyReadFile.close();
 }
+
+void printDigit(FloatMatrix& X_single) {
+    std::cout << "\n--- Input Image (28x28) ---\n";
+    for (size_t rows = 0; rows < 28; ++rows){
+        for (size_t columns = 0; columns < 28; ++columns) {
+            float pixel = X_single(0, rows * 28 + columns);
+            if (pixel > 0.5f) {
+                std::cout << "##";
+            }
+            else if (pixel > 0.1f) {
+                std::cout << "..";
+            }
+            else{
+                std::cout << "  ";
+            }
+        }
+        std::cout << '\n';
+    }
+}
+
+void printPredictionBars(FloatMatrix& Yhat, uint8_t actual_label){
+    std::cout << "\n--- Network Predictions ---\n";
+    size_t predicted = 0;
+    float highest_prob = -1.0f;
+
+    for (size_t digit = 0; digit < 10; ++digit){
+        float prob = Yhat(0,digit);
+        if (prob > highest_prob) {
+            highest_prob = prob;
+            predicted = digit;
+        }
+
+        size_t bar_width = static_cast<size_t>(std::max(0.0f, prob * 20.0f));
+        std::string bar(bar_width, '#');
+        bar.resize(20, ' ');
+
+        std::cout << "Digit " << digit << " [" << bar << "] " << std::fixed <<
+        std::setprecision(1) << (prob * 100.0f) << "%";
+
+        if (digit == actual_label) {
+            std::cout << " <-- (Actual)";
+        }
+        std::cout << '\n';
+    }
+
+    std::cout << "\nResult: Predicted " << predicted << " | Actual " <<
+    static_cast<int>(actual_label) << (predicted == actual_label ? " [CORRECT!]" : " [WRONG]") <<
+    "\n";
+}

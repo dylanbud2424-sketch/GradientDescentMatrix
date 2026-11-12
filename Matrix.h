@@ -8,6 +8,8 @@
 #include <cmath>
 #include <random>
 #include <sstream>
+#include <iomanip>
+#include <string>
 
 class FloatMatrix{
     private:
@@ -38,5 +40,7 @@ FloatMatrix initXavierNormal(size_t rows, size_t columns);
 FloatMatrix initZeroes(size_t rows, size_t columns);
 void writeMatrix(FloatMatrix matrix, std::ofstream& filetowrite);
 void fileToMatrix(std::string& filename, FloatMatrix& matrix_to_write);
+void printDigit(FloatMatrix& X_single);
+void printPredictionBars(FloatMatrix& Yhat, uint8_t actual_label);
 void printMatrix(FloatMatrix matrix);
 #endif // MATRIX_H_INCLUDED

@@ -15,14 +15,13 @@ int main()
 
     FloatMatrix W1 = initXavierNormal(input_dimensions, hidden_dimensions);
     FloatMatrix B1 = initZeroes(1, hidden_dimensions);
-    MatrixLayer layer1{W1, B1, 0.01};
+    MatrixLayer layer1{W1, B1, 0.5f};
 
     FloatMatrix W2 = initXavierNormal(hidden_dimensions, output_dimensions);
     FloatMatrix B2 = initZeroes(1, output_dimensions);
-    MatrixLayer layer2{W2, B2, 0.01};
+    MatrixLayer layer2{W2, B2, 0.5f};
 
     Network mnist_network{layer1, layer2};
-
 
     MnistDataset dataset;
     load_mnist_dataset(dataset);
@@ -48,7 +47,6 @@ int main()
 
     FloatMatrix Z2 = matrixAdd(matrixMultiply(H1, layer2.weights), layer2.biases);
     FloatMatrix Yhat = matrixSigmoid(Z2);
-
     /*
 
     for (size_t i=0; i<1000; i++){
@@ -69,22 +67,40 @@ int main()
     network_parameters_layer2_biases_file.close();
 
     */
-
     std::string file_to_open_l1w("network_parameters_layer1_weights.txt");
     fileToMatrix(file_to_open_l1w, mnist_network.layer1.weights);
     printMatrix(mnist_network.layer1.weights);
 
     std::string file_to_open_l1b("network_parameters_layer1_biases.txt");
-    fileToMatrix(file_to_open_l1b, mnist_network.layer1.weights);
+    fileToMatrix(file_to_open_l1b, mnist_network.layer1.biases);
     printMatrix(mnist_network.layer1.biases);
 
     std::string file_to_open_l2w("network_parameters_layer2_weights.txt");
-    fileToMatrix(file_to_open_l2w, mnist_network.layer1.weights);
+    fileToMatrix(file_to_open_l2w, mnist_network.layer2.weights);
     printMatrix(mnist_network.layer2.weights);
 
     std::string file_to_open_l2b("network_parameters_layer2_biases.txt");
-    fileToMatrix(file_to_open_l2b, mnist_network.layer1.weights);
+    fileToMatrix(file_to_open_l2b, mnist_network.layer2.biases);
     printMatrix(mnist_network.layer2.biases);
+
+    size_t sample_idx = 0;
+    std::vector<float> single_image(input_dimensions);
+    for (size_t i = 0; i < input_dimensions; ++i){
+        single_image[i] =
+        static_cast<float>(static_cast<uint8_t>(dataset.images[sample_idx * input_dimensions + i])) / 255.0f;
+    }
+    FloatMatrix X_single{1, input_dimensions, single_image};
+    uint8_t actual_label = dataset.labels[sample_idx];
+
+    printDigit(X_single);
+
+    FloatMatrix Z1_t = matrixAdd(matrixMultiply(X_single, mnist_network.layer1.weights), mnist_network.layer1.biases);
+    FloatMatrix H1_t = matrixSigmoid(Z1_t);
+
+    FloatMatrix Z2_t = matrixAdd(matrixMultiply(H1_t, mnist_network.layer2.weights), mnist_network.layer2.biases);
+    FloatMatrix Yhat_t = matrixSigmoid(Z2_t);
+
+    printPredictionBars(Yhat_t, actual_label);
 
     return 0;
 }

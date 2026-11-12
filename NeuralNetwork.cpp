@@ -79,9 +79,12 @@ void trainStep(Network &net, FloatMatrix X, FloatMatrix Y) {
         }
     }
 
-    net.layer2.weights = matrixSubtract(net.layer2.weights, matrixMultiplyScalar(dW2, net.layer2.learningRate));
-    net.layer1.weights = matrixSubtract(net.layer1.weights, matrixMultiplyScalar(dW1, net.layer1.learningRate));
+    float batch_size = static_cast<float>(X.get_rows());
+    float lr_scaled = net.layer2.learningRate / batch_size;
 
-    net.layer2.biases = matrixSubtract(net.layer2.biases, matrixMultiplyScalar(dB2, net.layer2.learningRate));
-    net.layer1.biases = matrixSubtract(net.layer1.biases, matrixMultiplyScalar(dB1, net.layer1.learningRate));
+    net.layer2.weights = matrixSubtract(net.layer2.weights, matrixMultiplyScalar(dW2, lr_scaled));
+    net.layer1.weights = matrixSubtract(net.layer1.weights, matrixMultiplyScalar(dW1, lr_scaled));
+
+    net.layer2.biases = matrixSubtract(net.layer2.biases, matrixMultiplyScalar(dB2, lr_scaled));
+    net.layer1.biases = matrixSubtract(net.layer1.biases, matrixMultiplyScalar(dB1, lr_scaled));
 }
